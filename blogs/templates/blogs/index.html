@@ -1,0 +1,35 @@
+{% extends "blogs/base.html" %}
+
+{% block content %}
+  <div class="jumbotron">
+    <h1>欢迎来到我的博客</h1>
+    
+    {% if user.is_authenticated %}
+      <a href="{% url 'blogs:add_new' %}" class="btn btn-primary" role="button">写新文章 &raquo;</a>
+    {% else %}
+      <p><i>(你需要登录才能发帖)</i></p>
+    {% endif %}
+  </div>
+
+  <h3>文章列表</h3>
+  <hr>
+
+  {% for b in all_blogs %}
+    <div class="card mb-3">
+      <div class="card-header">
+        <small class="text-muted">{{ b.date_added|date:'Y-m-d H:i' }} | 作者: {{ b.owner }}</small>
+      </div>
+      <div class="card-body">
+        <h4 class="card-title">{{ b.title }}</h4>
+        <p class="card-text">{{ b.text|linebreaks }}</p>
+        
+        {% if user == b.owner %}
+            <a href="{% url 'blogs:edit_existing' b.id %}" class="btn btn-sm btn-outline-secondary">修改</a>
+        {% endif %}
+      </div>
+    </div>
+  {% empty %}
+    <p>现在还没有文章</p>
+  {% endfor %}
+
+{% endblock content %}

@@ -1,0 +1,23 @@
+{% extends "blogs/base.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+  
+  {% if form.errors %}
+    <p>用户名或密码错误，请重试</p>
+  {% endif %}
+
+  <h3>登录</h3>
+  
+  <form method="post" action="{% url 'users:login' %}">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    
+    {% buttons %}
+      <button name="submit" class="btn btn-primary">登录</button>
+    {% endbuttons %}
+    
+    <input type="hidden" name="next" value="{% url 'blogs:index' %}" />
+  </form>
+
+{% endblock content %}
